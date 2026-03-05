@@ -55,6 +55,7 @@ module Functions
     def dependency_from_definition(unlock_subdependencies: true)
       dependencies_to_unlock = [dependency_name]
       dependencies_to_unlock += subdependencies if unlock_subdependencies
+      definition = nil
       begin
         definition = build_definition(dependencies_to_unlock)
         definition.resolve_remotely!
