@@ -472,12 +472,13 @@ begin
     )
     FileUtils.mkdir_p(cache_dir)
 
+    cached_dependency_files = nil
     cached_manifest = File.read(cache_manifest_path) if File.exist?(cache_manifest_path)
     cached_dependency_files = JSON.parse(cached_manifest) if cached_manifest
 
-    all_files_cached = cached_dependency_files&.all? do |file|
+    all_files_cached = (cached_dependency_files&.all? do |file|
       File.exist?(File.join(cache_dir, file["name"]))
-    end
+    end) || false
 
     if all_files_cached && $options[:cache_steps].include?("files")
       puts "=> reading dependency files from cache manifest: " \
